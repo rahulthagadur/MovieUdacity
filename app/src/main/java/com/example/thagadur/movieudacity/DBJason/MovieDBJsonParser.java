@@ -16,7 +16,7 @@ public class MovieDBJsonParser {
 
 
     /**
-     * parseMovieStringToJson() which converts String to Json Object and stored to list
+     * movieStringToJson() which converts String to Json Object and stored to list
      *
      * @param movieResultData
      * @return
