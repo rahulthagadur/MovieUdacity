@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         movieSort = Constant.SORT_BY_POPULAR;
         context = this;
         movieDBList = new ArrayList<>();
-        recyclerViewMovieList = (RecyclerView) findViewById(R.id.movie_list);
+        recyclerViewMovieList = findViewById(R.id.movie_list);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 2);
         recyclerViewMovieList.setLayoutManager(layoutManager);
     }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void loadMovieAdapter(String resultData) {
+    public void loadMovieListAdapter(String resultData) {
         movieDBList = MovieDBJsonParser.movieStringToJson(resultData);
         movieList = new MovieList(context, movieDBList);
         recyclerViewMovieList.setAdapter(movieList);
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String movieResponseData) {
             super.onPostExecute(movieResponseData);
             if (movieResponseData != null) {
-                loadMovieAdapter(movieResponseData);
+                loadMovieListAdapter(movieResponseData);
             }
         }
     }
