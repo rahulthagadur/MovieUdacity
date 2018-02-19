@@ -29,6 +29,7 @@ public class MovieDBJsonParser {
             JSONArray movieResultJsonArray = movieResultJsonObject.getJSONArray("results");
             for (int i = 0; i < movieResultJsonArray.length(); i++) {
                 MovieDB movieDB = new MovieDB();
+                movieDB.setMovieId(movieResultJsonArray.getJSONObject(i).getString("id"));
                 movieDB.setMovieTitle(movieResultJsonArray.getJSONObject(i).getString("original_title"));
                 movieDB.setImagePath(movieResultJsonArray.getJSONObject(i).getString("poster_path"));
                 movieDB.setMovieRating(movieResultJsonArray.getJSONObject(i).getString("vote_average"));

@@ -173,7 +173,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    private void checkForFavorite(String movieId) {
+    private void checkForFavorite(String id) {
         Uri uri = ContentProviderUtils.MovieTuple.CONTENT_URI;
         final String[] projection = ContentProviderUtils.MovieTuple.COLUMNS;
         Boolean check = false;
