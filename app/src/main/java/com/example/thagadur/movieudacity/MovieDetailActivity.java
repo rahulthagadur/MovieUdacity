@@ -37,6 +37,7 @@ import java.net.URL;
 import java.util.List;
 
 import static android.R.attr.apiKey;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by thagadur on 4/1/18.
@@ -59,10 +60,12 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialisationOfObjects();
-        String trailerUrl = Constant.END_POINT + "movie/" + movieId + "/videos" + apiKey;
-        String reviewUrl = Constant.END_POINT + "movie/" + movieId + "/reviews" + apiKey;
+
         readMovieData();
         loadMovieData();
+        String trailerUrl = Constant.END_POINT + "movie/" + movieId + "/videos" + apiKey;
+        String reviewUrl = Constant.END_POINT + "movie/" + movieId + "/reviews" + apiKey;
+        Toast.makeText(context, "Movie Id="+movieId, Toast.LENGTH_SHORT).show();
         checkForFavorite(movieId);
         favoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +121,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             movieImagePath = bundle.getString(Constant.MOVIE_IMAGE_POSTER);
             movieSynopsis = bundle.getString(Constant.MOVIE_SYNOPSIS);
             movieReleaseDate = bundle.getString(Constant.MOVIE_ReleaseDate);
+            Toast.makeText(context, "movie Id="+movieTitle, Toast.LENGTH_SHORT).show();
         } else {
         }
     }
@@ -169,7 +173,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    private void checkForFavorite(String id) {
+    private void checkForFavorite(String movieId) {
         Uri uri = ContentProviderUtils.MovieTuple.CONTENT_URI;
         final String[] projection = ContentProviderUtils.MovieTuple.COLUMNS;
         Boolean check = false;

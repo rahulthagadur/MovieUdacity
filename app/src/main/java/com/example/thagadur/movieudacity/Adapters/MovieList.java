@@ -43,6 +43,7 @@ public class MovieList extends RecyclerView.Adapter<MovieList.MovieViewContentHo
     @Override
     public void onBindViewHolder(MovieViewContentHolder holder, int position) {
         MovieDB movieDB = movieDBList.get(position);
+        final String movieId= movieDB.getMovieId();
         final String moviePoster = movieDB.getImagePath();
         final String movieTitle = movieDB.getMovieTitle();
         final String movieSynopsis = movieDB.getMovieSynopsis();
@@ -54,6 +55,7 @@ public class MovieList extends RecyclerView.Adapter<MovieList.MovieViewContentHo
             @Override
             public void onClick(View v) {
                 Intent intentMovieDetailedView = new Intent();
+                intentMovieDetailedView.putExtra(Constant.MOVIE_ID,movieId);
                 intentMovieDetailedView.putExtra(Constant.MOVIE_TITLE, movieTitle);
                 intentMovieDetailedView.putExtra(Constant.MOVIE_IMAGE_POSTER, moviePoster);
                 intentMovieDetailedView.putExtra(Constant.MOVIE_SYNOPSIS, movieSynopsis);

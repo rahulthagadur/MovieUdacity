@@ -5,7 +5,7 @@ package com.example.thagadur.movieudacity.DBJason;
  */
 
 public class MovieDB {
-    String imagePath;
+    String imagePath,movieId;
 
     public String getImagePath() {
         return imagePath;
@@ -51,4 +51,12 @@ public class MovieDB {
     String movieSynopsis;
     String movieRating;
     String movieReleaseDate;
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
 }
