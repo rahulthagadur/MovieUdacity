@@ -2,6 +2,8 @@ package com.example.thagadur.movieudacity.Constants;
 
 
 public class Constant {
+
+    public static String MOVIE_ID="movieID";
     public static  String END_POINT="http://api.themoviedb.org/3/";
     public static  String POSTER_PATH="http://image.tmdb.org/t/p/w185";
     public static String SORT_BY_TOP_RATED="movie/top_rated";
