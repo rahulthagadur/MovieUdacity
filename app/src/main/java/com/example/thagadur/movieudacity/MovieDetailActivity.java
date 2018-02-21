@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.thagadur.movieudacity.Adapters.MovieReviewData;
 import com.example.thagadur.movieudacity.Adapters.MovieTrailerData;
@@ -62,7 +61,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         loadMovieData();
         String trailerUrl = Constant.END_POINT + "movie/" + movieId + "/videos" + apiKey;
         String reviewUrl = Constant.END_POINT + "movie/" + movieId + "/reviews" + apiKey;
-        Toast.makeText(context, "Movie Id="+movieId, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(context, "Movie Id="+movieId, Toast.LENGTH_SHORT).show();
         checkForFavorite(movieId);
         favoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override

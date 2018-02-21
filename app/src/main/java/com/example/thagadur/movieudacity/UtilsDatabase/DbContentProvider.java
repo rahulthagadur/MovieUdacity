@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import static android.media.tv.TvContract.Programs.Genres.MOVIES;
 import static com.example.thagadur.movieudacity.UtilsDatabase.ContentProviderUtils.MovieTuple.CONTENT_URI;
 import static com.example.thagadur.movieudacity.UtilsDatabase.ContentProviderUtils.MovieTuple.TABLE_NAME;
 
@@ -21,9 +20,9 @@ import static com.example.thagadur.movieudacity.UtilsDatabase.ContentProviderUti
 
 public class DbContentProvider extends ContentProvider {
 
-    Database databaseHelper;
     public static final int movies = 400;
     private static final UriMatcher uriMatcher = getUri();
+    Database databaseHelper;
 
     public static UriMatcher getUri() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -41,13 +40,13 @@ public class DbContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] proj, @Nullable String selection, @Nullable String[] selArguments, @Nullable String sortOrder) {
-        final SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        final SQLiteDatabase sqLiteDatabase = databaseHelper.getReadableDatabase();
         int match = uriMatcher.match(uri);
         Cursor returnCursor;
 
         switch (match) {
             case movies:
-                returnCursor = db.query(TABLE_NAME,
+                returnCursor = sqLiteDatabase.query(TABLE_NAME,
                         proj,
                         selection,
                         selArguments,
@@ -70,21 +69,28 @@ public class DbContentProvider extends ContentProvider {
         return null;
     }
 
+    /**
+     * Inserting the record in the DB(Content Provider)
+     *
+     * @param uri
+     * @param contentValues
+     * @return uri of the Inserted row
+     */
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        final SQLiteDatabase sqLiteDatabase = databaseHelper.getWritableDatabase();
         int match = uriMatcher.match(uri);
 
         Uri returnUri;
 
         switch(match){
             case movies:
-                long id = db.insert(TABLE_NAME, null,contentValues);
+                long id = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
                 if(id > 0){
                     returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
-                }else{
-                    throw new android.database.SQLException("Insertion failed" + uri);
+                } else {
+                    throw new android.database.SQLException("Insertion Of Tuple Falied" + uri);
                 }
                 break;
 
@@ -95,14 +101,22 @@ public class DbContentProvider extends ContentProvider {
         return returnUri;
     }
 
+    /**
+     * Delete the tuple present in the Database(Content Provider)
+     *
+     * @param uri
+     * @param s
+     * @param strings
+     * @return
+     */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        final SQLiteDatabase sqLiteDatabase = databaseHelper.getWritableDatabase();
         int id= uriMatcher.match(uri);
         int tasksDeleted;
         switch (id) {
             case movies:
-                tasksDeleted = db.delete(TABLE_NAME, s, strings);
+                tasksDeleted = sqLiteDatabase.delete(TABLE_NAME, s, strings);
                 break;
             default:
                 throw new UnsupportedOperationException("URI Not Found" + uri);
@@ -114,15 +128,23 @@ public class DbContentProvider extends ContentProvider {
         return tasksDeleted;
     }
 
+    /**
+     * Updating the Database(Content Provider)
+     * @param uri
+     * @param contentValues
+     * @param s
+     * @param strings
+     * @return
+     */
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        final SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        final SQLiteDatabase sqLiteDatabase = databaseHelper.getWritableDatabase();
         int id = uriMatcher.match(uri);
         int tasksUpdated;
         switch (id) {
             case movies:
 
-                tasksUpdated = db.update(TABLE_NAME, contentValues, s, strings);
+                tasksUpdated = sqLiteDatabase.update(TABLE_NAME, contentValues, s, strings);
                 break;
             default:
                 throw new UnsupportedOperationException("URI Not Found" + uri);

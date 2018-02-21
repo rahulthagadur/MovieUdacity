@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.thagadur.movieudacity.DBJason.MovieReviewsDBs;
-import com.example.thagadur.movieudacity.DBJason.MovieTrailerDBs;
 import com.example.thagadur.movieudacity.R;
 
 import java.util.List;
@@ -20,17 +19,18 @@ import java.util.List;
 public class MovieReviewData extends RecyclerView.Adapter<MovieReviewData.MovieViewHolder> {
     List<MovieReviewsDBs> movieReviewsDBsList;
     Context context;
+
+    public MovieReviewData(Context context, List<MovieReviewsDBs> movieReviewList) {
+
+        this.context = context;
+        this.movieReviewsDBsList = movieReviewList;
+    }
+
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.review_list, viewGroup, false);
         MovieViewHolder movieViewHolder = new MovieViewHolder(view);
         return movieViewHolder;    }
-
-    public MovieReviewData(Context context, List<MovieReviewsDBs> movieReviewList) {
-
-        this.context=context;
-        this.movieReviewsDBsList=movieReviewList;
-    }
 
     @Override
     public void onBindViewHolder(MovieViewHolder movieViewHolder, int i) {
@@ -52,8 +52,8 @@ public class MovieReviewData extends RecyclerView.Adapter<MovieReviewData.MovieV
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            reviewAuthor=(TextView)itemView.findViewById(R.id.author_tv);
-            reviewContent=(TextView)itemView.findViewById(R.id.content_tv);
+            reviewAuthor = itemView.findViewById(R.id.author_textView);
+            reviewContent = itemView.findViewById(R.id.content_textView);
         }
     }
 }

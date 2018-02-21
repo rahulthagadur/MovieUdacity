@@ -118,16 +118,15 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = ContentProviderUtils.MovieTuple.CONTENT_URI;
             final String[] projection = ContentProviderUtils.MovieTuple.COLUMNS;
             cursor = getContentResolver().query(uri, projection, null, null, null);
-            movieList = new MovieList(context, getAllData(cursor));
+            movieList = new MovieList(context, getFavoriteListData(cursor));
             recyclerViewMovieList.setAdapter(movieList);
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public List<MovieDB> getAllData(Cursor cursor) {
+    public List<MovieDB> getFavoriteListData(Cursor cursor) {
         List<MovieDB> movieDBList = new ArrayList<>();
-
         if (cursor.moveToFirst()) {
             do {
                 MovieDB movieDB = new MovieDB();

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.thagadur.movieudacity.DBJason.MovieTrailerDBs;
 import com.example.thagadur.movieudacity.R;
@@ -68,9 +67,8 @@ public class MovieTrailerData extends RecyclerView.Adapter<MovieTrailerData.Movi
         final MovieTrailerDBs movieTrailerDBs = movieTrailerList.get(position);
         final String movieTrailerKey = movieTrailerDBs.getKey();
         final String movieTrailerName = movieTrailerDBs.getTrailerName();
-        final String movieTrailerType = movieTrailerDBs.getTrailerType();
 
-        Toast.makeText(context, "Trailer Details===" + movieTrailerName, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Trailer Details===" + movieTrailerName, Toast.LENGTH_SHORT).show();
         holder.movieTrailerName.setText(movieTrailerName);
         holder.movieTrailerName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +77,6 @@ public class MovieTrailerData extends RecyclerView.Adapter<MovieTrailerData.Movi
                 context.startActivity(intent);
             }
         });
-        //Picasso.with(context).load(Constant.POSTER_PATH + moviePoster).into(holder.imageViewMoviePoster);
-
     }
 
     /**
