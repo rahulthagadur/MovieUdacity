@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.thagadur.movieudacity.Adapters.MovieReviewData;
@@ -36,15 +35,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import static android.R.attr.apiKey;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-
 /**
  * Created by thagadur on 4/1/18.
  */
 
 public class MovieDetailActivity extends AppCompatActivity {
 
+    public static String apiKey = "?api_key=" + Constant.API_KEY;
     TextView textViewMovieTitle, textViewMovieRating, textViewMovieSynopsis, textViewMovieReleaseDate;
     ImageView imageViewMoviePoster, favoriteImageView;
     Context context;
@@ -92,20 +89,20 @@ public class MovieDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         context = this;
-        textViewMovieRating = (TextView) findViewById(R.id.textView_movie_rating);
-        textViewMovieReleaseDate = (TextView) findViewById(R.id.textView_movie_release_date);
-        textViewMovieTitle = (TextView) findViewById(R.id.textView_movie_title);
-        textViewMovieSynopsis = (TextView) findViewById(R.id.textView_movie_synopsis);
-        imageViewMoviePoster = (ImageView) findViewById(R.id.imageView_movie_image_poster);
-        favoriteImageView = (ImageView) findViewById(R.id.favourite_image_view);
+        textViewMovieRating = findViewById(R.id.textView_movie_rating);
+        textViewMovieReleaseDate = findViewById(R.id.textView_movie_release_date);
+        textViewMovieTitle = findViewById(R.id.textView_movie_title);
+        textViewMovieSynopsis = findViewById(R.id.textView_movie_synopsis);
+        imageViewMoviePoster = findViewById(R.id.imageView_movie_image_poster);
+        favoriteImageView = findViewById(R.id.favourite_image_view);
 
-        movieTrailer = (RecyclerView) findViewById(R.id.trailer_list);
+        movieTrailer = findViewById(R.id.trailer_list);
         LinearLayoutManager linearLayoutManagerTrailer = new LinearLayoutManager(context, LinearLayout.HORIZONTAL, false);
         movieTrailer.setLayoutManager(linearLayoutManagerTrailer);
 
-        movieReview = (RecyclerView) findViewById(R.id.trailer_list);
+        movieReview = findViewById(R.id.review_list);
         LinearLayoutManager linearLayoutManagerReview = new LinearLayoutManager(context, LinearLayout.HORIZONTAL, false);
-        movieTrailer.setLayoutManager(linearLayoutManagerTrailer);
+        movieReview.setLayoutManager(linearLayoutManagerReview);
 
     }
 
@@ -121,7 +118,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             movieImagePath = bundle.getString(Constant.MOVIE_IMAGE_POSTER);
             movieSynopsis = bundle.getString(Constant.MOVIE_SYNOPSIS);
             movieReleaseDate = bundle.getString(Constant.MOVIE_ReleaseDate);
-            Toast.makeText(context, "movie Id="+movieTitle, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "movie Id="+movieTitle, Toast.LENGTH_SHORT).show();
         } else {
         }
     }
@@ -138,7 +135,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     public void loadMovieTrailerData(String movieTrailerUrl) {
+
         URL url = NetworkUtilities.buildUrl(movieTrailerUrl);
+
         new RequestMovieTrailerdata().execute(url);
     }
 
@@ -149,6 +148,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void loadMovieTrailerAdapter(String movieResponsePosterData) {
         movieTrailerDBs = MovieDBJsonParser.parseMovieTrailerStringToJson(movieResponsePosterData);
+        System.out.println("Movie Trailer Details" + movieTrailerDBs);
+        // Toast.makeText(context, "Trailer Details="+movieTrailerDBs, Toast.LENGTH_SHORT).show();
         setTrailerIntoLayoutFields(movieTrailerDBs);
     }
 
@@ -204,7 +205,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Uri uri = getContentResolver().insert(ContentProviderUtils.MovieTuple.CONTENT_URI, contentValues);
         Log.v("Inserting Error", uri.toString());
         if (uri != null) {
-            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+            // Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -216,7 +217,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         // uri = uri.buildUpon().appendPath(movieId).build();
         int taskDeleted = getContentResolver().delete(uri, "movie_id=?",
                 new String[]{movieId});
-        Toast.makeText(getApplicationContext(), "Deleted=" + taskDeleted, Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(), "Deleted=" + taskDeleted, Toast.LENGTH_LONG).show();
         Log.v("Deleting Error", String.valueOf(taskDeleted));
     }
 
@@ -242,11 +243,14 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
-        protected void onPostExecute(String movieResponseData) {
-            super.onPostExecute(movieResponseData);
-            Log.d("Data", movieResponseData);
-            if (movieResponseData != null) {
-                loadMovieTrailerAdapter(movieResponseData);
+        protected void onPostExecute(String movieTrailerResponseData) {
+            super.onPostExecute(movieTrailerResponseData);
+            //Log.d("Data", movieTrailerResponseData);
+            if (movieTrailerResponseData != null) {
+                //Toast.makeText(context, "movieTrailerUrl=="+movieTrailerResponseData, Toast.LENGTH_SHORT).show();
+                loadMovieTrailerAdapter(movieTrailerResponseData);
+            } else {
+                // Toast.makeText(context, "Null Output", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -273,11 +277,11 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
-        protected void onPostExecute(String movieResponseData) {
-            super.onPostExecute(movieResponseData);
-            Log.d("Data", movieResponseData);
-            if (movieResponseData != null) {
-                loadMovieReviewAdapter(movieResponseData);
+        protected void onPostExecute(String movieReviewResponseData) {
+            super.onPostExecute(movieReviewResponseData);
+//            Log.d("Data", movieReviewResponseData);
+            if (movieReviewResponseData != null) {
+                loadMovieReviewAdapter(movieReviewResponseData);
             }
         }
     }

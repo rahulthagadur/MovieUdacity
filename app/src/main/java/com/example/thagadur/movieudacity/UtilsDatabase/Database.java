@@ -17,7 +17,7 @@ public class Database extends SQLiteOpenHelper{
 
     private static final String DATATYPE_NUMERIC = " INTEGER";
     private static final String DATATYPE_VARCHAR = " TEXT";
-    private static final String PRIMARY_KEY="INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String PRIMARY_KEY = " INTEGER PRIMARY KEY AUTOINCREMENT";
     private static final String OPEN_BRACE = "(";
     private static final String CLOSE_BRACE = ")";
     private static final String COMMA = ",";

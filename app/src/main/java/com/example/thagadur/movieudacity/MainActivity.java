@@ -2,8 +2,10 @@ package com.example.thagadur.movieudacity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +22,7 @@ import com.example.thagadur.movieudacity.Constants.Constant;
 import com.example.thagadur.movieudacity.DBJason.MovieDB;
 import com.example.thagadur.movieudacity.DBJason.MovieDBJsonParser;
 import com.example.thagadur.movieudacity.NetworkUtilsPackage.NetworkUtilities;
+import com.example.thagadur.movieudacity.UtilsDatabase.ContentProviderUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     String movieDbUrl;
     String movieSort;
     String movieUrlQuery;
+    Cursor cursor;
+    boolean checkMovieFav = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +113,43 @@ public class MainActivity extends AppCompatActivity {
             movieSort = Constant.SORT_BY_POPULAR;
             String movieUrlQuery = movieDbUrl + movieSort;
             loadMovieData(movieUrlQuery);
+        } else if (selectedItemId == R.id.sort_by_favorite) {
+            checkMovieFav = true;
+            Uri uri = ContentProviderUtils.MovieTuple.CONTENT_URI;
+            final String[] projection = ContentProviderUtils.MovieTuple.COLUMNS;
+            cursor = getContentResolver().query(uri, projection, null, null, null);
+            movieList = new MovieList(context, getAllData(cursor));
+            recyclerViewMovieList.setAdapter(movieList);
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public List<MovieDB> getAllData(Cursor cursor) {
+        List<MovieDB> movieDBList = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                MovieDB movieDB = new MovieDB();
+                String movieId = cursor.getString(0);
+                String movieTitle = cursor.getString(1);
+                String movieReleaseDate = cursor.getString(2);
+                String poster = cursor.getString(3);
+                String movieSynopsis = cursor.getString(4);
+                String movieRating = cursor.getString(5);
+
+                movieDB.setMovieId(movieId);
+                movieDB.setMovieTitle(movieTitle);
+                movieDB.setMovieReleaseDate(movieReleaseDate);
+                movieDB.setImagePath(poster);
+                movieDB.setMovieSynopsis(movieSynopsis);
+                movieDB.setMovieRating(movieRating);
+
+                movieDBList.add(movieDB);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return movieDBList;
     }
 
     class RequestMovieDbData extends AsyncTask<URL, Void, String> {
